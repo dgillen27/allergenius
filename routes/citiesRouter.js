@@ -7,7 +7,9 @@ const citiesRouter = Router();
 
 citiesRouter.get("/", async (req, res) => {
   try {
+    console.log("this is cities REQ", req);
     const cities = await City.findAll();
+    console.log("this is cities", cities);
     res.json({ cities });
   } catch (e) {
     console.log(e);
