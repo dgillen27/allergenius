@@ -19,6 +19,7 @@ import LogoutForm from "./components/LogoutForm";
 import TravelTips from "./components/TravelTips";
 import UserProfile from "./components/UserProfile";
 import AddBlogPost from "./components/AddBlogPost";
+import {GlobalStateProvider} from './contexts/GlobalState';
 import decode from "jwt-decode";
 import { getTranslation, speak } from "./services/googleApiHelper";
 import { registerUser, verifyToken, loginUser } from "./services/usersApi";
@@ -399,30 +400,36 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="Main-app-body">
-        <Header
-          currentUser={this.state.currentUser}
-          userData={this.state.userData}
-        />
-        <Route
-          exact
-          path="/"
-          render={props => (
-            <>
-              <div className="header-container">
-                <h1 className="main-title">Hey traveler</h1>
-                <QueryBar
-                  onKeyDown={this.handleQueryKeyDown}
-                  onFormChange={this.handleQueryChange}
-                  onClick={this.handleQueryClick}
-                  onSubmit={this.state.handleQuerySubmit}
-                  showOptions={this.state.showOptions}
-                  userInput={this.state.userInput}
-                  filteredOptions={this.state.filteredOptions}
-                  activeOptions={this.state.activeOption}
-                  placeHolder="Search by city, country, language or allergen"
-                />
-              </div>
+      <GlobalStateProvider value={{
+        userData: this.state.userData,
+        currentUser: this.state.currentUser,
+        handleEditFormChange: this.handleEditFormChange,
+        handleLogin: this.handleLogin,
+        token: this.state.token}}>
+        <div className="Main-app-body">
+          <Header
+            currentUser={this.state.currentUser}
+            userData={this.state.userData}
+            />
+          <Route
+            exact
+            path="/"
+            render={props => (
+              <>
+                <div className="header-container">
+                  <h1 className="main-title">Hey traveler</h1>
+                  <QueryBar
+                    onKeyDown={this.handleQueryKeyDown}
+                    onFormChange={this.handleQueryChange}
+                    onClick={this.handleQueryClick}
+                    onSubmit={this.state.handleQuerySubmit}
+                    showOptions={this.state.showOptions}
+                    userInput={this.state.userInput}
+                    filteredOptions={this.state.filteredOptions}
+                    activeOptions={this.state.activeOption}
+                    placeHolder="Search by city, country, language or allergen"
+                  />
+                </div>
 
               <ExploreHome {...props} getMedia={this.getMedia} />
             </>
@@ -635,6 +642,7 @@ class App extends Component {
         />
         <Footer />
       </div>
+      </GlobalStateProvider>
     );
   }
 }
