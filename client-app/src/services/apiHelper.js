@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 const api = axios.create({
-  baseURL: "http://localhost:4000"
+  baseURL: "https://aller-genius.herokuapp.com"
 });
 
 const updateToken = token => {
