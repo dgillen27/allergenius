@@ -5,6 +5,7 @@ import { getCountryLanguages } from '../services/countriesApi.js';
 
 class Translate extends Component {
   constructor(props) {
+    console.log(props);
     super(props);
     this.state = {
       currentUser: {},
@@ -142,28 +143,14 @@ class Translate extends Component {
   async componentDidMount() {
     await this.translateQuestions(this.state.questions,this.state.selectedLanguage);
     await this.translatePhrases(this.state.phrases,this.state.selectedLanguage);
+    this.setState({
+      allergies: this.props.allergies,
+      relevantLanguages: this.props.relevantLanguages
+    })
     //getCountryLanguages
     //getUserAllergies
     //runTheTranslationScripts
     //need to make dropdown select
-  }
-
-  componentWillReceiveProps(nextProps) {
-  if(nextProps.allergies!==this.props.allergies || nextProps.relevantLanguages !== this.props.relevantLanguages) {
-    this.setState(
-      {allergies: nextProps.allergies,
-        relevantLanguages: nextProps.relevantLanguages
-       });
-    }
-  /*if(nextProps.currentQuery[0] !== undefined) {
-    switch (nextProps.currentQuery[0]) {
-      case 'places-city':
-        let languages = await getCountryLanguages(nextProps.currentQuery[0].countryId);
-        this.setState({
-          relevantLanguages: languages
-        });
-    }
-  }*/
   }
 
 
