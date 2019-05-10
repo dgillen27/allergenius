@@ -6,7 +6,8 @@ if (process.env.DATABASE_URL) {
     operatorsAliases: false,
     define: {
       underscored: true,
-      returning: true
+      returning: true,
+      timestamps: false
     }
   });
 } else {
