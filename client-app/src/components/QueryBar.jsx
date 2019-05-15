@@ -1,4 +1,5 @@
 import React from "react";
+import {GlobalStateConsumer} from '../contexts/GlobalState';
 import { withRouter } from "react-router-dom";
 
 const QueryBar = props => {
@@ -46,24 +47,26 @@ const QueryBar = props => {
   }
 
   return (
-    <div className="form-query">
-      <div className="form-container">
-        <form id="query-search-form">
-          <input
-            type="text"
-            className="search-box"
-            onChange={onFormChange}
-            onKeyDown={onKeyDown}
-            value={userInput}
-            onSubmit={onSubmit && onClick}
-            name="userInput"
-            autoComplete="off"
-            placeholder={placeHolder}
-          />
-        </form>
-      </div>
-      <div className="options-container">{optionList}</div>
-    </div>
+    <GlobalStateConsumer>
+      {value => (<div className="form-query">
+        <div className="form-container">
+          <form id="query-search-form">
+            <input
+              type="text"
+              className="search-box"
+              onChange={onFormChange}
+              onKeyDown={onKeyDown}
+              value={userInput}
+              onSubmit={onSubmit && onClick}
+              name="userInput"
+              autoComplete="off"
+              placeholder={placeHolder}
+            />
+          </form>
+        </div>
+        <div className="options-container">{optionList}</div>
+      </div>)}
+    </GlobalStateConsumer>
   );
 };
 export default withRouter(QueryBar);

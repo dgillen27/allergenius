@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {GlobalStateConsumer} from '../contexts/GlobalState';
 import { speak, getTranslation } from '../services/googleApiHelper.js';
 import { makeBlogpostCard } from '../services/cardsApi.js';
 import { getCountryLanguages } from '../services/countriesApi.js';

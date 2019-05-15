@@ -1,7 +1,8 @@
-// import React, { useState } from "react";
+// import React, { Component } from "react";
+// import {GlobalStateConsumer} from '../contexts/GlobalState';
 // import { createBlogpost } from "../services/blogpostsApi";
 // import { withRouter, Link } from "react-router-dom";
-// import { Button } from "./Button";
+
 
 // export function AddBlogPost({cityList}) {
 //   const [postData, setPostData] = useState({
