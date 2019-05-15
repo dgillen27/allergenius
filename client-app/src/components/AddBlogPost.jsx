@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {GlobalStateConsumer} from '../contexts/GlobalState';
 import { createBlogpost } from "../services/blogpostsApi";
 import { withRouter, Link } from "react-router-dom";
 

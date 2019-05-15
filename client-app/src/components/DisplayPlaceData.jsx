@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import DisplayList from "./DisplayList";
+import {GlobalStateConsumer} from '../contexts/GlobalState';
 import { Link, Route, withRouter } from "react-router-dom";
 
 class DisplayPlaceData extends Component {
@@ -32,7 +33,11 @@ class DisplayPlaceData extends Component {
     // }
   }
   render() {
-    return <DisplayList listData={this.state.posts} />;
+    return (
+      <GlobalStateConsumer>
+      {value => (<DisplayList listData={this.state.posts} />)}
+      </GlobalStateConsumer>
+    )
   }
 }
 
