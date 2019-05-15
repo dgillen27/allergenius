@@ -1,13 +1,16 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 
-const Button = ({ onClickEvent, text }) => {
-  //const { onClickEvent } = useContext(ButtonContext);
-  return (
-    <button type="button" onClick={() => `${onClickEvent}()`}>
-      {text}
-    </button>
-  );
-};
+export const Button = styled.button`
+  border: 1px solid ${({ primary }) => (primary ? "blue" : "red")}
+  padding: 5px;
+`;
 
-export default Button;
+{
+  /* <Button onClick={() => whatever()}>
+            left button
+          </Button>
+          <Button primary onClick={() => whatever()}>
+            right button
+          </Button> */
+}
