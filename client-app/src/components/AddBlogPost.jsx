@@ -1,97 +1,87 @@
-import React, { Component } from "react";
-import {GlobalStateConsumer} from '../contexts/GlobalState';
-import { createBlogpost } from "../services/blogpostsApi";
-import { withRouter, Link } from "react-router-dom";
+// import React, { Component } from "react";
+// import {GlobalStateConsumer} from '../contexts/GlobalState';
+// import { createBlogpost } from "../services/blogpostsApi";
+// import { withRouter, Link } from "react-router-dom";
 
-class AddBlogPost extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      postData: {
-        cityName: "",
-        date: "",
-        title: "",
-        text: ""
-      }
-    };
-    this.handleCommentFormChange = this.handleCommentFormChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
 
-  handleCommentFormChange(e) {
-    const { name, value } = e.target;
-    this.setState(prevState => ({
-      postData: {
-        ...prevState.postData,
-        [name]: value
-      }
-    }));
-  }
-  async handleSubmit(e) {
-    e.preventDefault();
-    const { cityList } = this.props;
-    console.log(this.state.cityName, cityList.cities);
-    const cityId = cityList.cities
-      .filter(city => city.name === this.state.cityName)
-      .map(city => city.id);
-    console.log("this is cityId", this.state.cityName + cityId);
-    const resp = await createBlogpost(
-      this.props.match.params.id,
-      cityId[0],
-      this.state.postData.text,
-      this.state.postData.title
-    );
-    console.log(resp);
-    this.setState(prevState => ({
-      postData: {
-        ...prevState.postData
-      }
-    }));
-    this.props.history.push(
-      `/user/${this.props.userData.id}/username/${this.props.userData.username}`
-    );
-  }
+// export function AddBlogPost({cityList}) {
+//   const [postData, setPostData] = useState({
+//     cityName: "",
+//     date: "",
+//     title: "",
+//     text: ""
+//   });
 
-  async componentDidMount() {
-    this.setState(prevState => ({
-      postData: {
-        ...prevState.postData
-      }
-    }));
-  }
-  render() {
-    return (
-      <div className="outer-comment">
-        <form className="comment-form" onSubmit={this.handleSubmit}>
-          <h2>Blog Post</h2>
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//   setPostData(...postData,{[name]: value});
+//   }
 
-          <label htmlFor="title">Title</label>
-          <div className="title-container">
-            <input
-              type="text"
-              name="title"
-              value={this.state.title}
-              id="title"
-              onChange={this.handleCommentFormChange}
-            />
-          </div>
-          <label htmlFor="text">Text</label>
-          <div className="text-container">
-            <input
-              type="textarea"
-              name="text"
-              value={this.state.text}
-              id="text"
-              onChange={this.handleCommentFormChange}
-            />
-          </div>
-          <button type="submit" onClick={this.handleSubmit}>
-            Submit
-          </button>
-        </form>
-      </div>
-    );
-  }
-}
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     const cityId = cityList.cities
+//       .filter(city => city.name === postData.cityName)
+//       .map(city => city.id);
+//     const resp = await createBlogpost(
+//       props.match.params.id,
+//       cityId[0],
+//       postData.text,
+//       postData.title
+//     );
+//    props.history.push(
+//       `/user/${this.props.userData.id}/username/${this.props.userData.username}`
+//     );
+//   }
 
-export default withRouter(AddBlogPost);
+//   useEffect(() => {
+//     document.title = `You clicked ${count} times`;
+//   }, [count])
+
+//   setState(
+//     postData: {
+//       ...prevState.postData
+//     }
+//   }))) ;
+
+//   render() {
+//     return (
+//       <div className="outer-comment">
+//         <form className="comment-form" onSubmit={handleSubmit}>
+//           <h2>Blog Post</h2>
+
+//           <label htmlFor="title">Title</label>
+//           <div className="title-container">
+//             <input
+//               type="text"
+//               name="title"
+//               value={this.state.title}
+//               id="title"
+//               onChange={handleChange}
+//             />
+//           </div>
+//           {/* <Button onClick={() => whatever()}>
+//             left button
+//           </Button>
+//           <Button primary onClick={() => whatever()}>
+//             right button
+//           </Button> */}
+//           <label htmlFor="text">Text</label>
+//           <div className="text-container">
+//             <input
+//               type="textarea"
+//               name="text"
+//               value={this.state.text}
+//               id="text"
+//               onChange={handleChange}
+//             />
+//           </div>
+//           <button type="submit" onClick={handleSubmit}>
+//             Submit
+//           </button>
+//         </form>
+//       </div>
+//     );
+//   }
+// }
+
+// export default withRouter(AddBlogPost);
