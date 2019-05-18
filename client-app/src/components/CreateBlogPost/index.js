@@ -1,13 +1,25 @@
-import React from "react";
-import useBlogPostForm from "../CustomHooks";
-import { createBlogpost } from ".../services/blogpostsApi";
+import React, { useState, useEffect } from "react";
+//import useBlogPostForm from "../CustomHooks";
+import { createBlogpost } from "../../services/blogpostsApi";
 
 const CreateBlogPost = () => {
-  const submitBlogPost = () => {};
+  const [inputs, setInputs] = useState({});
+  const postSubmit = async e => {
+    e.preventDefault();
+    await createBlogpost(inputs);
+  };
+
+  const handleInputChange = e => {
+    e.persist();
+    setInputs(inputs => ({
+      ...inputs,
+      [e.target.name]: e.target.value
+    }));
+  };
 
   return (
     <div className="outer-comment">
-      <form className="comment-form" onSubmit={handleSubmit}>
+      <form className="comment-form" onSubmit={postSubmit}>
         <h2>Blog Post</h2>
         <label htmlFor="title">Title</label>
         <input
@@ -25,7 +37,7 @@ const CreateBlogPost = () => {
           onChange={handleInputChange}
         />
 
-        <button type="submit" onClick={handleSubmit}>
+        <button type="submit" onClick={postSubmit}>
           Submit
         </button>
       </form>
