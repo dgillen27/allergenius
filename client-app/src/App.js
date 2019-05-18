@@ -8,18 +8,18 @@ import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import Translate from "./components/Translate";
 import PlacesHome from "./components/PlacesHome";
-import DisplayPlaceData from "./components/DisplayPlaceData";
-import About from "./components/About";
+import DisplayPlaceData from "./components/Scratch-WIPs/DisplayPlaceData";
+import About from "./components/AboutPage";
 import Privacy from "./components/Privacy";
 import Faq from "./components/FAQ";
-import Contact from "./components/ContactForm";
+import Contact from "./components/ContactPage";
 import FoodAllergenHome from "./components/FoodAllergenHome";
-import DisplayFoodAllergen from "./components/DisplayFoodAllergen";
+
 import LogoutForm from "./components/LogoutForm";
-import TravelTips from "./components/TravelTips";
+import TravelTips from "./components/Scratch-WIPs/TravelTips";
 import UserProfile from "./components/UserProfile";
-import AddBlogPost from "./components/AddBlogPost";
-import {GlobalStateProvider} from './contexts/GlobalState';
+import CreateBlogPost from "./components/CreateBlogPost";
+import { GlobalStateProvider } from "./contexts/GlobalState";
 import decode from "jwt-decode";
 import { getTranslation, speak } from "./services/googleApiHelper";
 import { registerUser, verifyToken, loginUser } from "./services/usersApi";
@@ -400,17 +400,20 @@ class App extends Component {
   }
   render() {
     return (
-      <GlobalStateProvider value={{
-        userData: this.state.userData,
-        currentUser: this.state.currentUser,
-        handleEditFormChange: this.handleEditFormChange,
-        handleLogin: this.handleLogin,
-        token: this.state.token}}>
+      <GlobalStateProvider
+        value={{
+          userData: this.state.userData,
+          currentUser: this.state.currentUser,
+          handleEditFormChange: this.handleEditFormChange,
+          handleLogin: this.handleLogin,
+          token: this.state.token
+        }}
+      >
         <div className="Main-app-body">
           <Header
             currentUser={this.state.currentUser}
             userData={this.state.userData}
-            />
+          />
           <Route
             exact
             path="/"
@@ -431,217 +434,217 @@ class App extends Component {
                   />
                 </div>
 
-              <ExploreHome {...props} getMedia={this.getMedia} />
-            </>
-          )}
-        />
-        <Route
-          exact
-          path="/login"
-          render={props => (
-            <>
-              <LoginForm
+                <ExploreHome {...props} getMedia={this.getMedia} />
+              </>
+            )}
+          />
+          <Route
+            exact
+            path="/login"
+            render={props => (
+              <>
+                <LoginForm
+                  {...props}
+                  show={this.state.currentUser}
+                  toggle={this.state.toggleLogin}
+                  onChange={this.handleLoginFormChange}
+                  onSubmit={this.handleLogin}
+                  email={this.state.loginFormData.email}
+                  password={this.state.loginFormData.password}
+                  onClick={this.handleLoginToggle}
+                />
+                <RegisterForm
+                  {...props}
+                  userData={""}
+                  title={"Register User"}
+                  onClick={this.handleLoginToggle}
+                  show={this.state.currentUser}
+                  toggle={this.state.toggleLogin}
+                  onChange={this.handleRegisterFormChange}
+                  onSubmit={this.handleRegister}
+                  username={this.state.registerFormData.username}
+                  email={this.state.registerFormData.email}
+                  password={this.state.registerFormData.password}
+                  submitButtonText="Submit"
+                  backButtonText="Back to Login"
+                  passwordAsk={"y"}
+                />
+              </>
+            )}
+          />
+          <Route
+            exact
+            path="/register"
+            render={props => (
+              <>
+                <RegisterForm
+                  {...props}
+                  userData={""}
+                  title={"Register User"}
+                  onClick={() => this.props.history.push(`/login`)}
+                  show={this.state.currentUser}
+                  toggle={this.state.toggleLogin}
+                  onChange={this.handleRegisterFormChange}
+                  onSubmit={this.handleRegister}
+                  username={this.state.registerFormData.username}
+                  email={this.state.registerFormData.email}
+                  password={this.state.registerFormData.password}
+                  submitButtonText="Submit"
+                  backButtonText="Back to Login"
+                />
+              </>
+            )}
+          />
+          <Route exact path="/about" render={() => <About />} />
+          <Route exact path="/privacy" render={() => <Privacy />} />
+          <Route
+            exact
+            path="/travel-tips"
+            render={() => <TravelTips postList={this.state.postList} />}
+          />
+          <Route exact path="/FAQ" render={() => <Faq />} />
+          <Route
+            exact
+            path="/food-allergens"
+            render={() => <FoodAllergenHome />}
+          />
+          <Route
+            exact
+            path="/food-allergens/:allergen_name/:allergen_id"
+            render={props => (
+              <Translate
                 {...props}
-                show={this.state.currentUser}
-                toggle={this.state.toggleLogin}
-                onChange={this.handleLoginFormChange}
-                onSubmit={this.handleLogin}
-                email={this.state.loginFormData.email}
-                password={this.state.loginFormData.password}
-                onClick={this.handleLoginToggle}
+                userData={this.state.userData}
+                currentQuery={this.state.currentQuery}
+                allergies={this.state.allergyList.filter(
+                  allergen => allergen.name === props.match.params.allergen_name
+                )}
+                relevantLanguages={this.state.languageList}
               />
-              <RegisterForm
+            )}
+          />
+          <Route
+            exact
+            path="/user/:id/username/:username"
+            render={props => (
+              <UserProfile {...props} userData={this.state.userData} />
+            )}
+          />
+          <Route
+            exact
+            path="/user/:id/post"
+            render={props => (
+              <CreateBlogPost
                 {...props}
-                userData={""}
-                title={"Register User"}
-                onClick={this.handleLoginToggle}
-                show={this.state.currentUser}
-                toggle={this.state.toggleLogin}
-                onChange={this.handleRegisterFormChange}
-                onSubmit={this.handleRegister}
-                username={this.state.registerFormData.username}
-                email={this.state.registerFormData.email}
-                password={this.state.registerFormData.password}
-                submitButtonText="Submit"
-                backButtonText="Back to Login"
-                passwordAsk={"y"}
+                userData={this.state.userData}
+                cityList={this.state.cityList}
               />
-            </>
-          )}
-        />
-        <Route
-          exact
-          path="/register"
-          render={props => (
-            <>
-              <RegisterForm
+            )}
+          />
+          <Route
+            exact
+            path="/user/:id/edit"
+            render={props => (
+              <EditUserData
                 {...props}
-                userData={""}
-                title={"Register User"}
-                onClick={() => this.props.history.push(`/login`)}
-                show={this.state.currentUser}
-                toggle={this.state.toggleLogin}
-                onChange={this.handleRegisterFormChange}
-                onSubmit={this.handleRegister}
-                username={this.state.registerFormData.username}
-                email={this.state.registerFormData.email}
-                password={this.state.registerFormData.password}
-                submitButtonText="Submit"
-                backButtonText="Back to Login"
+                userData={this.state.userData}
+                title={"Edit User"}
+                onChange={this.handleEditFormChange}
+                onSubmit={this.handleEdit}
+                username={this.state.userData.username}
+                email={this.state.userData.email}
+                password={this.state.userData.password}
+                submitButtonText="Submit Edits"
+                backButtonText={"Cancel (Back to Home)"}
+                onClick={() => this.props.history.push("/")}
+                allergens={this.state.allergyList.map(el => el.name)}
               />
-            </>
-          )}
-        />
-        <Route exact path="/about" render={() => <About />} />
-        <Route exact path="/privacy" render={() => <Privacy />} />
-        <Route
-          exact
-          path="/travel-tips"
-          render={() => <TravelTips postList={this.state.postList} />}
-        />
-        <Route exact path="/FAQ" render={() => <Faq />} />
-        <Route
-          exact
-          path="/food-allergens"
-          render={() => <FoodAllergenHome />}
-        />
-        <Route
-          exact
-          path="/food-allergens/:allergen_name/:allergen_id"
-          render={props => (
-            <Translate
-              {...props}
-              userData={this.state.userData}
-              currentQuery={this.state.currentQuery}
-              allergies={this.state.allergyList.filter(
-                allergen => allergen.name === props.match.params.allergen_name
-              )}
-              relevantLanguages={this.state.languageList}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/user/:id/username/:username"
-          render={props => (
-            <UserProfile {...props} userData={this.state.userData} />
-          )}
-        />
-        <Route
-          exact
-          path="/user/:id/post"
-          render={props => (
-            <AddBlogPost
-              {...props}
-              userData={this.state.userData}
-              cityList={this.state.cityList}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/user/:id/edit"
-          render={props => (
-            <EditUserData
-              {...props}
-              userData={this.state.userData}
-              title={"Edit User"}
-              onChange={this.handleEditFormChange}
-              onSubmit={this.handleEdit}
-              username={this.state.userData.username}
-              email={this.state.userData.email}
-              password={this.state.userData.password}
-              submitButtonText="Submit Edits"
-              backButtonText={"Cancel (Back to Home)"}
-              onClick={() => this.props.history.push("/")}
-              allergens={this.state.allergyList.map(el => el.name)}
-            />
-          )}
-        />
-        <Route exact path="/contact" render={() => <Contact />} />
-        <Route
-          exact
-          path="/places"
-          render={props => (
-            <PlacesHome
-              {...props}
-              getMedia={this.getMedia}
-              onKeyDown={this.handleQueryKeyDown}
-              onFormChange={this.handleQueryChange}
-              onClick={this.handleQueryClick}
-              onSubmit={this.state.handleQuerySubmit}
-              showOptions={this.state.showOptions}
-              userInput={this.state.userInput}
-              filteredOptions={this.state.filteredOptions}
-              activeOptions={this.state.activeOption}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/places-city/:place_name/:place_id"
-          render={props => (
-            <Translate
-              {...props}
-              userData={this.state.userData}
-              currentQuery={this.state.currentQuery}
-              allergies={this.state.allergyList}
-              relevantLanguages={this.state.languageList}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/places-country/:place_name/:place_id"
-          render={props => (
-            <Translate
-              {...props}
-              userData={this.state.userData}
-              currentQuery={this.state.currentQuery}
-              allergies={this.state.allergyList}
-              relevantLanguages={this.state.languageList}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/languages/:language_name/:language_code"
-          render={props => (
-            <Translate
-              {...props}
-              userData={this.state.userData}
-              userAllergies={this.state.userAllergies}
-              currentQuery={this.state.currentQuery}
-              allergies={this.state.allergyList}
-              relevantLanguages={this.state.languageList.filter(
-                language => language.name === props.params.match.language_name
-              )}
-            />
-          )}
-        />
-        <Route
-          exact
-          path="/logout"
-          render={props => (
-            <LogoutForm {...props} handleLogout={this.handleLogout} />
-          )}
-        />
-        <Route
-          exact
-          path="/translate"
-          render={props => (
-            <Translate
-              {...props}
-              translationRoute={true}
-              allergies={this.state.allergyList}
-              relevantLanguages={this.state.languageList}
-              userAllergies={this.state.userAllergies}
-              currentUser={this.state.currentUser}
-            />
-          )}
-        />
-        <Footer />
-      </div>
+            )}
+          />
+          <Route exact path="/contact" render={() => <Contact />} />
+          <Route
+            exact
+            path="/places"
+            render={props => (
+              <PlacesHome
+                {...props}
+                getMedia={this.getMedia}
+                onKeyDown={this.handleQueryKeyDown}
+                onFormChange={this.handleQueryChange}
+                onClick={this.handleQueryClick}
+                onSubmit={this.state.handleQuerySubmit}
+                showOptions={this.state.showOptions}
+                userInput={this.state.userInput}
+                filteredOptions={this.state.filteredOptions}
+                activeOptions={this.state.activeOption}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/places-city/:place_name/:place_id"
+            render={props => (
+              <Translate
+                {...props}
+                userData={this.state.userData}
+                currentQuery={this.state.currentQuery}
+                allergies={this.state.allergyList}
+                relevantLanguages={this.state.languageList}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/places-country/:place_name/:place_id"
+            render={props => (
+              <Translate
+                {...props}
+                userData={this.state.userData}
+                currentQuery={this.state.currentQuery}
+                allergies={this.state.allergyList}
+                relevantLanguages={this.state.languageList}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/languages/:language_name/:language_code"
+            render={props => (
+              <Translate
+                {...props}
+                userData={this.state.userData}
+                userAllergies={this.state.userAllergies}
+                currentQuery={this.state.currentQuery}
+                allergies={this.state.allergyList}
+                relevantLanguages={this.state.languageList.filter(
+                  language => language.name === props.params.match.language_name
+                )}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/logout"
+            render={props => (
+              <LogoutForm {...props} handleLogout={this.handleLogout} />
+            )}
+          />
+          <Route
+            exact
+            path="/translate"
+            render={props => (
+              <Translate
+                {...props}
+                translationRoute={true}
+                allergies={this.state.allergyList}
+                relevantLanguages={this.state.languageList}
+                userAllergies={this.state.userAllergies}
+                currentUser={this.state.currentUser}
+              />
+            )}
+          />
+          <Footer />
+        </div>
       </GlobalStateProvider>
     );
   }

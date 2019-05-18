@@ -1,32 +1,27 @@
-import React, { Component } from "react";
-import {GlobalStateConsumer} from '../contexts/GlobalState';
+import React, { useState, useEffect } from "react";
+import { GlobalStateConsumer } from "../contexts/GlobalState";
 import decode from "jwt-decode";
 import DisplayList from "./DisplayList";
 import { getUsersBlogposts } from "../services/blogpostsApi";
 import { Link, Route, withRouter } from "react-router-dom";
 import { verifyToken } from "../services/apiHelper";
 
-class UserProfile extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      posts: []
-    };
-  }
+const UserProfile = props => {
+  const [state, setState] = useState({ posts: [] });
 
-  async componentDidMount() {
-    const posts = await getUsersBlogposts(this.props.match.params.id);
-    this.setState({
+  const fetchPosts = async () => {
+    const posts = await getUsersBlogposts(props.match.params.id);
+    setState({
       posts
     });
-  }
+  };
 
-  render() {
-    console.log("USERPROFILE : userData:", this.props.userData);
-    console.log("USERPROFILE : props.match.params:", this.props.match.params);
-    return (
-      <GlobalStateConsumer>
-        {value => (<div className="user-profile">
+  useEffect(() => fetchPosts(), []);
+
+  return (
+    <GlobalStateConsumer>
+      {value => (
+        <div className="user-profile">
           <div className="user-container">
             <div className="avatar-username">
               <h2> {this.props.userData.username} </h2>{" "}
@@ -55,12 +50,12 @@ class UserProfile extends Component {
               </button>{" "}
             </div>{" "}
             <h1> User Posts: </h1>
-            <DisplayList listData={this.state.posts} />
+            <DisplayList listData={state.posts} />
           </div>{" "}
-        </div>)}
-      </GlobalStateConsumer>
-    );
-  }
-}
+        </div>
+      )}
+    </GlobalStateConsumer>
+  );
+};
 
 export default withRouter(UserProfile);
