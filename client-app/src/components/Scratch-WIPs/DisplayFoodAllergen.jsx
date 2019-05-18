@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link, Route, withRouter } from "react-router-dom";
-import {GlobalStateConsumer} from '../contexts/GlobalState';
+import { GlobalStateConsumer } from "../contexts/GlobalState";
 import Translate from "./Translate";
 
 class DisplayFoodAllergen extends Component {

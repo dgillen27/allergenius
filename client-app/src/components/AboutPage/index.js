@@ -1,5 +1,5 @@
 import React from "react";
-import { aboutText } from "../data/aboutText";
+import { aboutText } from "../../data/aboutText";
 
 export default props => (
   <div className="contact-container">

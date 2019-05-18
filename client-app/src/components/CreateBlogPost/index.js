@@ -2,7 +2,7 @@ import React from "react";
 import useBlogPostForm from "../CustomHooks";
 import { createBlogpost } from ".../services/blogpostsApi";
 
-export const BlogPost = () => {
+const CreateBlogPost = () => {
   const submitBlogPost = () => {};
 
   return (
@@ -32,3 +32,5 @@ export const BlogPost = () => {
     </div>
   );
 };
+
+export default CreateBlogPost;

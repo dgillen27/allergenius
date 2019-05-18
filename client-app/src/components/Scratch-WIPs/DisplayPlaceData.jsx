@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import DisplayList from "./DisplayList";
-import {GlobalStateConsumer} from '../contexts/GlobalState';
+import DisplayList from "../DisplayList";
+import { GlobalStateConsumer } from "../../contexts/GlobalState";
 import { Link, Route, withRouter } from "react-router-dom";
 
 class DisplayPlaceData extends Component {
@@ -35,9 +35,9 @@ class DisplayPlaceData extends Component {
   render() {
     return (
       <GlobalStateConsumer>
-      {value => (<DisplayList listData={this.state.posts} />)}
+        {value => <DisplayList listData={this.state.posts} />}
       </GlobalStateConsumer>
-    )
+    );
   }
 }
 
